@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxLingo — PDF to Audio Converter & Language Translator</title>
+  <meta name="description" content="Convert PDF documents into natural audio speech and translate text across 50+ languages with real-time karaoke text highlighting, AI summarizer, voice dictation, and MP3/SRT export.">
+  <meta name="keywords" content="PDF to Audio, Language Translator, Text to Speech, AI Document Summarizer, Voice Dictation, PDF reader, MP3 converter, Subtitle SRT, Multilingual TTS">
+  <meta name="theme-color" content="#0d1117">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎧</text></svg>">
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Glowing Background Orbs -->
+  <div class="glow-bg-orb orb-1" aria-hidden="true"></div>
+  <div class="glow-bg-orb orb-2" aria-hidden="true"></div>
+  <div class="glow-bg-orb orb-3" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="app-header" id="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+            <line x1="8" x2="16" y1="22" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Vox<span class="gradient-text">Lingo</span></h1>
+          <span class="brand-tagline">PDF to Audio, AI Summarizer &amp; Multilingual Studio</span>
+        </div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-controls">
+        <button id="btn-sample-pdf" class="btn btn-glass btn-sm" title="Test with preloaded astronomy PDF">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Try Sample PDF</span>
+        </button>
+
+        <!-- Session History Button -->
+        <button id="btn-history-toggle" class="btn btn-glass btn-sm" title="View Recent Sessions">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>History</span>
+        </button>
+
+        <!-- Zen Focus Fullscreen Toggle -->
+        <button id="btn-zen-mode" class="btn btn-icon" title="Toggle Zen Fullscreen Reader" aria-label="Toggle zen reader mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="btn-theme-toggle" class="btn btn-icon" title="Toggle Theme" aria-label="Toggle dark/light theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+          </svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <a href="#how-it-works" class="btn btn-icon" title="How It Works" id="btn-info-modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Body -->
+  <main class="app-main">
+    <div class="main-container">
+
+      <!-- Process Step Indicator -->
+      <section class="step-indicator-bar" id="step-indicator-bar" aria-label="Progress steps">
+        <div class="step-item active" id="step-1-badge">
+          <span class="step-number">1</span>
+          <span class="step-label">Upload or Dictate</span>
+        </div>
+        <div class="step-line" id="step-line-1"></div>
+        <div class="step-item" id="step-2-badge">
+          <span class="step-number">2</span>
+          <span class="step-label">Summarize &amp; Translate</span>
+        </div>
+        <div class="step-line" id="step-line-2"></div>
+        <div class="step-item" id="step-3-badge">
+          <span class="step-number">3</span>
+          <span class="step-label">Listen &amp; Export</span>
+        </div>
+      </section>
+
+      <!-- SECTION 1: INGESTION ZONE (Upload PDF, Paste Text, or Voice Dictate) -->
+      <section class="card glass-card upload-section" id="upload-section">
+        <div class="card-header-flex">
+          <div class="tab-switch-group">
+            <button id="tab-upload-pdf" class="tab-btn active" data-tab="pdf">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              <span>Upload PDF Document</span>
+            </button>
+            <button id="tab-direct-text" class="tab-btn" data-tab="text">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 7 4 4 20 4 20 7"/>
+                <line x1="9" y1="20" x2="15" y2="20"/>
+                <line x1="12" y1="4" x2="12" y2="20"/>
+              </svg>
+              <span>Paste / Dictate Notes</span>
+            </button>
+          </div>
+
+          <div class="quick-status-chip" id="file-status-chip">
+            <span class="status-dot"></span>
+            <span id="file-status-text">Ready for input</span>
+          </div>
+        </div>
+
+        <!-- PDF Dropzone Tab Content -->
+        <div class="tab-content" id="tab-content-pdf">
+          <div class="dropzone" id="pdf-dropzone">
+            <input type="file" id="pdf-file-input" accept=".pdf,application/pdf" class="file-input-hidden" aria-label="Choose PDF file">
+            <div class="dropzone-content">
+              <div class="dropzone-icon-ring">
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h3 class="dropzone-title">Drag &amp; Drop your PDF file here</h3>
+              <p class="dropzone-subtitle">or <button type="button" class="link-btn" id="btn-browse-trigger">browse computer</button> to select</p>
+              <div class="dropzone-meta">
+                <span>PDF up to 35MB</span>
+                <span class="bullet">•</span>
+                <span>In-memory extraction</span>
+                <span class="bullet">•</span>
+                <span>Multi-page &amp; Chapters</span>
+              </div>
+            </div>
+
+            <!-- Upload progress bar -->
+            <div class="upload-progress-overlay" id="upload-progress-overlay" style="display: none;">
+              <div class="spinner-ring"></div>
+              <div class="progress-details">
+                <span class="progress-text" id="progress-text">Extracting document text...</span>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Text Tab Content (with Voice Dictation) -->
+        <div class="tab-content" id="tab-content-text" style="display: none;">
+          <div class="direct-text-wrapper">
+            <div class="dictation-banner" id="dictation-banner" style="display: none;">
+              <span class="mic-pulse-dot"></span>
+              <span id="dictation-status-text">Listening... speak into your microphone</span>
+              <button id="btn-stop-dictation" class="btn btn-xs btn-glass">Stop Recording</button>
+            </div>
+            <textarea id="direct-text-input" placeholder="Type or paste any text, article, notes, or click 'Start Voice Dictation' below to speak your words into the editor..." rows="5"></textarea>
+            <div class="direct-text-actions">
+              <!-- Voice Recognition Microphone Button -->
+              <button id="btn-dictate-mic" class="btn btn-glass btn-sm" title="Dictate text using your microphone">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" y1="19" x2="12" y2="22"/>
+                </svg>
+                <span id="dictate-btn-label">Voice Dictation</span>
+              </button>
+
+              <button id="btn-load-text" class="btn btn-primary btn-sm">
+                <span>Load Text into Studio</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extracted File Info Bar (visible after load) -->
+        <div class="file-info-badge" id="file-info-badge" style="display: none;">
+          <div class="file-info-left">
+            <span class="pdf-tag">PDF</span>
+            <span class="file-name" id="badge-filename">document.pdf</span>
+            <span class="file-size" id="badge-filesize">2.4 MB</span>
+          </div>
+          <div class="file-stats-pills">
+            <span class="stat-pill"><strong id="badge-pages">0</strong> pages</span>
+            <span class="stat-pill"><strong id="badge-words">0</strong> words</span>
+            <span class="stat-pill"><strong id="badge-chars">0</strong> chars</span>
+            <span class="stat-pill"><strong id="badge-time">~0 min</strong> listen</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: DUAL-PANE WORKSPACE (Source Text & Translation) -->
+      <section class="workspace-grid" id="workspace-grid">
+
+        <!-- LEFT PANEL: Extracted / Source Document -->
+        <article class="card glass-card editor-card" id="source-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon source-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+              </span>
+              <div>
+                <h2 class="panel-title">Original Document</h2>
+                <span class="panel-sub" id="source-lang-label">Detected: English</span>
+              </div>
+            </div>
+
+            <!-- Source Tools Deck -->
+            <div class="panel-tools">
+              <!-- AI Summarize Button -->
+              <button id="btn-summarize-doc" class="btn btn-sparkle btn-sm" title="Generate AI Summary & Key Takeaways">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+                </svg>
+                <span>AI Summary</span>
+              </button>
+
+              <!-- In-Text Search Toggle -->
+              <button id="btn-toggle-search-source" class="btn btn-icon btn-sm" title="Search text (Ctrl+F)" aria-label="Toggle search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </button>
+
+              <!-- Font Size Adjustment -->
+              <button id="btn-font-smaller" class="btn btn-icon btn-sm" title="Decrease font size" aria-label="Decrease font">A-</button>
+              <button id="btn-font-larger" class="btn btn-icon btn-sm" title="Increase font size" aria-label="Increase font">A+</button>
+
+              <!-- Page switcher -->
+              <select id="source-page-filter" class="custom-select select-sm" aria-label="Select page">
+                <option value="all">All Pages</option>
+              </select>
+
+              <button id="btn-copy-source" class="btn btn-icon btn-sm" title="Copy Original Text" aria-label="Copy source text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+              <button id="btn-clear-source" class="btn btn-icon btn-sm" title="Clear Text" aria-label="Clear source text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- In-Text Search Bar Container (Source) -->
+          <div class="in-text-search-bar" id="source-search-bar" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="source-search-input" placeholder="Search words in document..." aria-label="Search original text">
+            <span class="search-match-count" id="source-search-count">0 matches</span>
+            <button id="btn-close-search-source" class="btn-search-close" title="Close search">&times;</button>
+          </div>
+
+          <!-- Source Text Container / Viewer with Karaoke highlight support -->
+          <div class="text-display-box" id="source-text-box" contenteditable="true" spellcheck="false" data-placeholder="Extracted PDF content will appear here. You can also edit or refine the text directly..."></div>
+
+          <div class="panel-footer">
+            <span class="counter-text" id="source-counter">0 words | 0 characters</span>
+            <button id="btn-play-source" class="btn btn-glass btn-sm" title="Listen to original text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>Speak Original</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- CENTER ACTION PILLAR (Translate Trigger & Options) -->
+        <aside class="action-pillar" id="action-pillar">
+          <div class="language-selection-card glass-card">
+            <label for="target-lang-select" class="lang-select-label">
+              <span>Translate To</span>
+              <span class="badge-mini" id="target-flag">🇪🇸</span>
+            </label>
+
+            <div class="custom-select-wrapper">
+              <select id="target-lang-select" class="custom-select select-lg" aria-label="Select target language">
+                <!-- Dynamically populated with 50+ languages -->
+              </select>
+            </div>
+
+            <button id="btn-translate-trigger" class="btn btn-gradient btn-pulse" title="Translate document">
+              <svg class="translate-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m5 8 6 6"/>
+                <path d="m4 14 6-6 2-3"/>
+                <path d="M2 5h12"/>
+                <path d="M7 2h1"/>
+                <path d="m22 22-5-10-5 10"/>
+                <path d="M14 18h6"/>
+              </svg>
+              <span id="translate-btn-text">Translate Now</span>
+              <div class="spinner-small" id="translate-spinner" style="display: none;"></div>
+            </button>
+
+            <!-- Quick Popular Language Chips -->
+            <div class="popular-lang-chips">
+              <span class="chip-label">Quick:</span>
+              <button class="lang-chip" data-code="es">🇪🇸 ES</button>
+              <button class="lang-chip" data-code="fr">🇫🇷 FR</button>
+              <button class="lang-chip" data-code="de">🇩🇪 DE</button>
+              <button class="lang-chip" data-code="hi">🇮🇳 HI</button>
+              <button class="lang-chip" data-code="ja">🇯🇵 JA</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- RIGHT PANEL: Translated Document -->
+        <article class="card glass-card editor-card" id="translated-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon target-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </span>
+              <div>
+                <h2 class="panel-title">Translated Document</h2>
+                <span class="panel-sub" id="target-lang-sub">Target: Spanish (Español)</span>
+              </div>
+            </div>
+
+            <!-- Target Tools Deck -->
+            <div class="panel-tools">
+              <!-- In-Text Search Toggle -->
+              <button id="btn-toggle-search-target" class="btn btn-icon btn-sm" title="Search translation" aria-label="Toggle search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </button>
+
+              <button id="btn-copy-translated" class="btn btn-icon btn-sm" title="Copy Translation" aria-label="Copy translated text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+
+              <!-- Export Dropdown Menu Button -->
+              <div class="dropdown-wrapper">
+                <button id="btn-export-dropdown" class="btn btn-glass btn-sm" title="Export Formats">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span>Export</span>
+                </button>
+                <div class="dropdown-menu" id="export-dropdown-menu">
+                  <button class="dropdown-item" id="btn-download-txt">📄 Plain Text (.TXT)</button>
+                  <button class="dropdown-item" id="btn-download-srt">⏱️ Subtitles (.SRT)</button>
+                  <button class="dropdown-item" id="btn-download-bilingual">🌐 Bilingual Dual Document (.TXT)</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- In-Text Search Bar Container (Target) -->
+          <div class="in-text-search-bar" id="target-search-bar" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="target-search-input" placeholder="Search words in translation..." aria-label="Search translated text">
+            <span class="search-match-count" id="target-search-count">0 matches</span>
+            <button id="btn-close-search-target" class="btn-search-close" title="Close search">&times;</button>
+          </div>
+
+          <!-- Translated Text Box with Live Karaoke Highlighting -->
+          <div class="text-display-box" id="translated-text-box" contenteditable="true" spellcheck="false" data-placeholder="Translated text will appear here. Click 'Translate Now' to start..."></div>
+
+          <div class="panel-footer">
+            <span class="counter-text" id="target-counter">0 words | 0 characters</span>
+            <button id="btn-play-translated" class="btn btn-primary btn-sm" title="Listen to translated text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>Speak Translation</span>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <!-- AI SUMMARY DRAWER / SHOWCASE (Collapsible) -->
+      <section class="card glass-card summary-card" id="summary-card" style="display: none;">
+        <div class="summary-card-header">
+          <div class="summary-title-flex">
+            <span class="sparkle-icon">✨</span>
+            <div>
+              <h3 class="summary-title">AI Executive Summary &amp; Key Takeaways</h3>
+              <span class="summary-reduction-badge" id="summary-reduction-badge">75% condensed</span>
+            </div>
+          </div>
+          <div class="summary-actions">
+            <button id="btn-speak-summary" class="btn btn-glass btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Listen to Summary</span>
+            </button>
+            <button id="btn-translate-summary" class="btn btn-primary btn-sm">
+              <span>Translate Summary</span>
+            </button>
+            <button id="btn-close-summary" class="btn btn-icon btn-sm" title="Close summary">&times;</button>
+          </div>
+        </div>
+
+        <div class="summary-card-body">
+          <div class="summary-exec-box">
+            <h4>Executive Brief</h4>
+            <p id="summary-exec-text">Document summary will appear here...</p>
+          </div>
+
+          <div class="summary-points-box">
+            <h4>Key Insights &amp; Salient Points</h4>
+            <ul id="summary-points-list" class="summary-points-list"></ul>
+          </div>
+
+          <div class="summary-keywords-row">
+            <span class="keywords-label">Core Topics:</span>
+            <div id="summary-keywords-container" class="keywords-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: AUDIO STUDIO & LIVE KARAOKE PLAYER -->
+      <section class="card glass-card audio-studio-card" id="audio-studio-section">
+        <div class="studio-header">
+          <div class="studio-title-block">
+            <div class="equalizer-icon-animated" id="equalizer-icon">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div>
+              <h2 class="studio-title">Audio Player &amp; Speech Studio</h2>
+              <p class="studio-subtitle" id="now-playing-label">Idle • Ready to synthesize audio</p>
+            </div>
+          </div>
+
+          <!-- Audio Engine Selector (Browser Natural Voice vs Server AI MP3) -->
+          <div class="engine-mode-toggle">
+            <label class="toggle-pill active" id="mode-browser-speech">
+              <input type="radio" name="tts-engine" value="browser" checked>
+              <span>Interactive Player (Karaoke)</span>
+            </label>
+            <label class="toggle-pill" id="mode-server-mp3">
+              <input type="radio" name="tts-engine" value="server">
+              <span>High-Def MP3 Generator</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Canvas Dynamic Audio Waveform Visualizer -->
+        <div class="waveform-container" id="waveform-container">
+          <canvas id="waveform-canvas" width="900" height="90" aria-label="Audio Waveform Visualization"></canvas>
+          <div class="karaoke-sentence-preview" id="karaoke-sentence-preview">
+            <span class="karaoke-indicator">KARAOKE TRACKER</span>
+            <p id="current-spoken-text">Press play to listen with synced sentence highlighting</p>
+          </div>
+        </div>
+
+        <!-- Audio Player Timeline & Time Display -->
+        <div class="player-timeline-row">
+          <span class="time-stamp" id="time-current">00:00</span>
+          <div class="scrub-bar-wrapper" id="scrub-bar-wrapper">
+            <div class="scrub-bar-progress" id="scrub-bar-progress" style="width: 0%;"></div>
+            <input type="range" id="audio-progress-slider" min="0" max="100" value="0" step="0.1" aria-label="Audio progress">
+          </div>
+          <span class="time-stamp" id="time-duration">00:00</span>
+        </div>
+
+        <!-- Audio Controls Deck -->
+        <div class="player-deck">
+          <!-- Voice Select (Filtered by language) -->
+          <div class="voice-picker-group">
+            <label for="voice-select" class="control-label">Voice / Speaker</label>
+            <select id="voice-select" class="custom-select select-sm" aria-label="Select speaker voice">
+              <option value="">Default System Voice</option>
+            </select>
+          </div>
+
+          <!-- Main Playback Controls -->
+          <div class="playback-controls">
+            <!-- Loop / Repeat Sentence Toggle -->
+            <button id="btn-loop-sentence" class="btn btn-icon btn-glass" title="Repeat Current Sentence (Loop)" aria-label="Loop sentence">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m17 2 4 4-4 4"/>
+                <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+                <path d="m7 22-4-4 4-4"/>
+                <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+              </svg>
+            </button>
+
+            <button id="btn-skip-prev" class="btn btn-icon btn-glass" title="Jump Back 10 Seconds" aria-label="Rewind 10 seconds">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="11 17 6 12 11 7"/>
+                <polyline points="18 17 13 12 18 7"/>
+              </svg>
+            </button>
+
+            <button id="btn-play-pause" class="btn btn-play-main" title="Play / Pause" aria-label="Play or pause audio">
+              <!-- Play Icon -->
+              <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <!-- Pause Icon -->
+              <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+            </button>
+
+            <button id="btn-stop" class="btn btn-icon btn-glass" title="Stop Audio" aria-label="Stop audio">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="6" width="12" height="12" rx="2"/>
+              </svg>
+            </button>
+
+            <button id="btn-skip-next" class="btn btn-icon btn-glass" title="Jump Forward 10 Seconds" aria-label="Forward 10 seconds">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"/>
+                <polyline points="6 17 11 12 6 7"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Speed Tuning & Quick Speed Chips -->
+          <div class="audio-tuning-group">
+            <div class="tuning-item">
+              <div class="tuning-header">
+                <span class="control-label">Speed</span>
+                <span class="tuning-val" id="speed-val">1.0x</span>
+              </div>
+              <input type="range" id="rate-slider" min="0.5" max="2.0" step="0.1" value="1.0" class="range-slider" aria-label="Speech speed">
+              <div class="quick-speed-chips">
+                <button class="speed-chip" data-speed="0.75">0.75x</button>
+                <button class="speed-chip active" data-speed="1.0">1.0x</button>
+                <button class="speed-chip" data-speed="1.25">1.25x</button>
+                <button class="speed-chip" data-speed="1.5">1.5x</button>
+              </div>
+            </div>
+
+            <!-- Voice Pitch Tuning -->
+            <div class="tuning-item">
+              <div class="tuning-header">
+                <span class="control-label">Pitch</span>
+                <span class="tuning-val" id="pitch-val">1.0</span>
+              </div>
+              <input type="range" id="pitch-slider" min="0.6" max="1.4" step="0.05" value="1.0" class="range-slider" aria-label="Voice pitch">
+            </div>
+
+            <!-- Volume Control -->
+            <div class="tuning-item volume-tuning">
+              <div class="tuning-header">
+                <span class="control-label">Volume</span>
+                <span class="tuning-val" id="volume-val">100%</span>
+              </div>
+              <div class="volume-slider-row">
+                <button id="btn-mute-toggle" class="btn btn-icon btn-xs" aria-label="Toggle mute">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  </svg>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" class="range-slider" aria-label="Volume level">
+              </div>
+            </div>
+
+            <!-- Sleep Timer Control -->
+            <div class="tuning-item sleep-timer-item">
+              <div class="tuning-header">
+                <span class="control-label">Sleep Timer</span>
+                <span class="tuning-val" id="sleep-timer-badge">Off</span>
+              </div>
+              <select id="sleep-timer-select" class="custom-select select-xs" aria-label="Sleep timer">
+                <option value="0">Off</option>
+                <option value="5">5 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Download MP3 Export Button -->
+          <div class="download-action-group">
+            <button id="btn-download-mp3" class="btn btn-accent" title="Download full audio as MP3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Download MP3</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden Audio Element for MP3 stream playback -->
+        <audio id="native-audio-player" style="display: none;"></audio>
+      </section>
+
+      <!-- SECTION 4: FEATURE SHOWCASE & HOW IT WORKS -->
+      <section class="info-grid" id="how-it-works">
+        <div class="info-card">
+          <div class="info-icon purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <h3>1. In-Memory PDF Parsing</h3>
+          <p>Extracts text from multi-page PDFs directly via high-speed Node.js parser with zero disk-saving privacy.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon cyan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3>2. 50+ Languages &amp; AI Summary</h3>
+          <p>Translates into European, Asian, African, and Indic scripts with smart sentence chunking and 1-click executive summaries.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon emerald">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            </svg>
+          </div>
+          <h3>3. Karaoke Speech &amp; Multi-Export</h3>
+          <p>Real-time synced sentence reading, animated waveform visualizer, voice dictation, and MP3 + SRT subtitle exports.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- HISTORY MODAL -->
+  <div class="modal-overlay" id="history-modal-overlay" style="display: none;">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <h3>Recent Session History</h3>
+        </div>
+        <button id="btn-close-history" class="btn btn-icon btn-sm" aria-label="Close history">&times;</button>
+      </div>
+      <div class="modal-body" id="history-items-container">
+        <p class="history-empty-text">No saved sessions yet. Upload a PDF or translate text to save a session!</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-clear-history" class="btn btn-glass btn-sm">Clear History</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>VoxLingo &copy; 2026 — PDF to Audio Converter, AI Summarizer &amp; Multilingual Translator.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">Node.js JavaScript Backend</span>
+        <span class="footer-badge">HTML5 + CSS3 + Web Speech API</span>
+        <span class="footer-badge">AI Summarizer &amp; SRT Export</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
