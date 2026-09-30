@@ -256,13 +256,27 @@
     } catch (err) {
       console.warn('Failed to load languages from backend, using fallback list:', err);
       languagesList = [
-        { code: 'es', name: 'Spanish', flag: '🇪🇸' },
-        { code: 'fr', name: 'French', flag: '🇫🇷' },
-        { code: 'de', name: 'German', flag: '🇩🇪' },
-        { code: 'hi', name: 'Hindi', flag: '🇮🇳' },
-        { code: 'ja', name: 'Japanese', flag: '🇯🇵' },
-        { code: 'zh-CN', name: 'Chinese (Simplified)', flag: '🇨🇳' },
-        { code: 'en', name: 'English', flag: '🇺🇸' },
+        { code: 'en', name: 'English', native: 'English', flag: '🇺🇸' },
+        { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
+        { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷' },
+        { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪' },
+        { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+        { code: 'zh-CN', name: 'Chinese (Simplified)', native: '简体中文', flag: '🇨🇳' },
+        { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵' },
+        { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷' },
+        { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹' },
+        { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹' },
+        { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺' },
+        { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦' },
+        { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: '🇧🇩' },
+        { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
+        { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
+        { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', flag: '🇮🇩' },
+        { code: 'tr', name: 'Turkish', native: 'Türkçe', flag: '🇹🇷' },
+        { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', flag: '🇻🇳' },
+        { code: 'tl', name: 'Filipino (Tagalog)', native: 'Tagalog', flag: '🇵🇭' },
+        { code: 'nl', name: 'Dutch', native: 'Nederlands', flag: '🇳🇱' },
+        { code: 'pl', name: 'Polish', native: 'Polski', flag: '🇵🇱' },
       ];
       populateLanguageDropdown(languagesList);
     }
@@ -396,14 +410,7 @@
     const targetCode = state.activeAudioSource === 'source' ? (state.sourceLang || 'en') : state.targetLang;
     const baseCode = (targetCode || 'en').split('-')[0].toLowerCase();
 
-    const matchingVoices = state.availableVoices.filter(v => {
-      const lang = v.lang.toLowerCase();
-      return lang.startsWith(baseCode) || lang.replace('_', '-').startsWith(targetCode.toLowerCase());
-    });
-
-    const voicesToDisplay = matchingVoices.length > 0 ? matchingVoices : state.availableVoices;
-
-    if (voicesToDisplay.length === 0) {
+    if (!state.availableVoices || state.availableVoices.length === 0) {
       const opt = document.createElement('option');
       opt.value = '';
       opt.textContent = 'Default System Voice';
@@ -411,18 +418,58 @@
       return;
     }
 
-    voicesToDisplay.forEach((voice, index) => {
+    const matchingVoices = state.availableVoices.filter(v => {
+      const lang = (v.lang || '').toLowerCase();
+      return lang.startsWith(baseCode) || lang.replace('_', '-').startsWith(targetCode.toLowerCase());
+    });
+
+    const otherVoices = state.availableVoices.filter(v => !matchingVoices.includes(v));
+    let selectedFound = false;
+
+    const createVoiceOption = (voice, isDefaultTarget = false) => {
       const opt = document.createElement('option');
       opt.value = voice.voiceURI;
-      opt.textContent = `${voice.name} (${voice.lang})${voice.default ? ' — Default' : ''}`;
-      if (index === 0 && !state.selectedVoiceURI) {
+      opt.textContent = `${voice.name} (${voice.lang})${voice.default ? ' — System Default' : ''}`;
+      if (voice.voiceURI === state.selectedVoiceURI) {
+        opt.selected = true;
+        selectedFound = true;
+      } else if (!state.selectedVoiceURI && isDefaultTarget) {
         opt.selected = true;
         state.selectedVoiceURI = voice.voiceURI;
-      } else if (voice.voiceURI === state.selectedVoiceURI) {
-        opt.selected = true;
+        selectedFound = true;
       }
-      elements.voiceSelect.appendChild(opt);
-    });
+      return opt;
+    };
+
+    if (matchingVoices.length > 0) {
+      const matchGroup = document.createElement('optgroup');
+      matchGroup.label = `✨ Recommended for ${targetCode.toUpperCase()} (${matchingVoices.length} voices)`;
+      matchingVoices.forEach((voice, index) => {
+        matchGroup.appendChild(createVoiceOption(voice, index === 0));
+      });
+      elements.voiceSelect.appendChild(matchGroup);
+
+      if (otherVoices.length > 0) {
+        const otherGroup = document.createElement('optgroup');
+        otherGroup.label = `🌐 Other Available Voices (${otherVoices.length})`;
+        otherVoices.forEach(voice => {
+          otherGroup.appendChild(createVoiceOption(voice, false));
+        });
+        elements.voiceSelect.appendChild(otherGroup);
+      }
+    } else {
+      const allGroup = document.createElement('optgroup');
+      allGroup.label = `🌐 All Available System Voices (${state.availableVoices.length})`;
+      state.availableVoices.forEach((voice, index) => {
+        allGroup.appendChild(createVoiceOption(voice, index === 0));
+      });
+      elements.voiceSelect.appendChild(allGroup);
+    }
+
+    if (!selectedFound && elements.voiceSelect.options.length > 0) {
+      elements.voiceSelect.selectedIndex = 0;
+      state.selectedVoiceURI = elements.voiceSelect.value;
+    }
   }
 
   // -------------------------------------------------------------

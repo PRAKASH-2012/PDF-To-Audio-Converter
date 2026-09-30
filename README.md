@@ -2,7 +2,7 @@
 
 A full-stack web application built strictly with **HTML5, CSS3, and JavaScript on the frontend** and **JavaScript (Node.js & Express) on the backend**. 
 
-VoxLingo allows users to upload any PDF document (or voice dictate / type notes), extract its text in-memory, generate **AI Executive Summaries & Key Takeaways**, translate it into **50+ languages**, and listen to it with an interactive **Karaoke Speech Player** (real-time sentence-by-sentence highlighting) or export to **MP3 Audio, Timed Subtitles (.SRT), and Bilingual Transcripts**.
+VoxLingo allows users to upload any PDF document (or voice dictate / type notes), extract its text in-memory, generate **AI Executive Summaries & Key Takeaways**, translate it into **70+ languages**, and listen to it with an interactive **Karaoke Speech Player** (real-time sentence-by-sentence highlighting) or export to **MP3 Audio, Timed Subtitles (.SRT), and Bilingual Transcripts**.
 
 ---
 
@@ -23,7 +23,7 @@ VoxLingo allows users to upload any PDF document (or voice dictate / type notes)
 - Click the **Microphone** button to speak your thoughts or notes directly into the studio using the Web Speech Recognition API.
 - Live pulsating recording indicator with real-time transcription.
 
-### 4. 🌐 Multilingual Translation Engine (50+ Languages)
+### 4. 🌐 Multilingual Translation Engine (70+ Languages)
 - Translates into Spanish, French, German, Hindi, Japanese, Chinese, Russian, Arabic, Portuguese, Italian, Korean, and dozens more.
 - Intelligent paragraph and sentence chunking splits long chapters and documents safely without hitting API bounds.
 - Automatic source language detection and Quick Popular Language Chips (`ES`, `FR`, `DE`, `HI`, `JA`).
@@ -87,6 +87,20 @@ IDE/
 
 ---
 
+## 🌐 Permanent Cloud Deployment (Free & Instant)
+
+Deploy VoxLingo permanently to the cloud to get a 24/7 public URL:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/PRAKASH-2012/PDF-To-Audio-Converter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PRAKASH-2012/PDF-To-Audio-Converter)
+
+| Platform | Setup Time | Permanent Live URL Format | Direct 1-Click Deploy Link |
+| :--- | :--- | :--- | :--- |
+| **Render** (Recommended) | ~1 min | `https://voxlingo-pdf-audio.onrender.com` | [Deploy on Render](https://render.com/deploy?repo=https://github.com/PRAKASH-2012/PDF-To-Audio-Converter) |
+| **Vercel** | ~1 min | `https://voxlingo-pdf-audio.vercel.app` | [Deploy on Vercel](https://vercel.com/new/clone?repository-url=https://github.com/PRAKASH-2012/PDF-To-Audio-Converter) |
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
@@ -121,7 +135,7 @@ http://localhost:3000
 
 | Endpoint | Method | Request Body / Params | Description |
 | :--- | :--- | :--- | :--- |
-| `/api/languages` | `GET` | None | Returns the list of 43+ supported languages with flags and native names |
+| `/api/languages` | `GET` | None | Returns the list of 70+ supported languages with flags and native names |
 | `/api/extract-pdf` | `POST` | `multipart/form-data` with `pdf` | Extracts text, page counts, word counts, and metadata from uploaded PDF |
 | `/api/summarize` | `POST` | `{ text }` | Generates executive summary, bullet points, keywords, and reduction stats |
 | `/api/translate` | `POST` | `{ text, targetLang, sourceLang }` | Translates text into target language using intelligent chunking |
@@ -136,4 +150,3 @@ http://localhost:3000
 
 ## 📄 License
 ISC
->>>>>>> 8da3265 (feat: initial commit of VoxLingo - PDF to Audio Converter, AI Summarizer and Multilingual Translator)

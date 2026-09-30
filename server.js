@@ -29,8 +29,9 @@ const upload = multer({
   },
 });
 
-// Comprehensive list of supported languages with codes, flags, and names
+// Comprehensive list of supported languages with codes, flags, native names, and TTS mapping (70+ languages)
 const SUPPORTED_LANGUAGES = [
+  // Major Global Languages
   { code: 'en', name: 'English', native: 'English', flag: '🇺🇸', ttsLang: 'en' },
   { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', ttsLang: 'es' },
   { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', ttsLang: 'fr' },
@@ -44,6 +45,8 @@ const SUPPORTED_LANGUAGES = [
   { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹', ttsLang: 'pt' },
   { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', ttsLang: 'ru' },
   { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', ttsLang: 'ar' },
+
+  // South Asian & Indic Languages
   { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: '🇧🇩', ttsLang: 'bn' },
   { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳', ttsLang: 'te' },
   { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳', ttsLang: 'ta' },
@@ -53,11 +56,23 @@ const SUPPORTED_LANGUAGES = [
   { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳', ttsLang: 'ml' },
   { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳', ttsLang: 'pa' },
   { code: 'ur', name: 'Urdu', native: 'اردو', flag: '🇵🇰', ttsLang: 'ur' },
+  { code: 'ne', name: 'Nepali', native: 'नेपाली', flag: '🇳🇵', ttsLang: 'ne' },
+  { code: 'si', name: 'Sinhala', native: 'සිංහල', flag: '🇱🇰', ttsLang: 'si' },
+
+  // Southeast & East Asian Languages
+  { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', flag: '🇮🇩', ttsLang: 'id' },
+  { code: 'ms', name: 'Malay', native: 'Bahasa Melayu', flag: '🇲🇾', ttsLang: 'ms' },
+  { code: 'th', name: 'Thai', native: 'ไทย', flag: '🇹🇭', ttsLang: 'th' },
+  { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', flag: '🇻🇳', ttsLang: 'vi' },
+  { code: 'tl', name: 'Filipino (Tagalog)', native: 'Tagalog', flag: '🇵🇭', ttsLang: 'tl' },
+  { code: 'km', name: 'Khmer', native: 'ភាសាខ្មែរ', flag: '🇰🇭', ttsLang: 'km' },
+  { code: 'my', name: 'Burmese', native: 'မြန်မာစာ', flag: '🇲🇲', ttsLang: 'my' },
+  { code: 'jw', name: 'Javanese', native: 'Basa Jawa', flag: '🇮🇩', ttsLang: 'jw' },
+  { code: 'su', name: 'Sundanese', native: 'Basa Sunda', flag: '🇮🇩', ttsLang: 'su' },
+
+  // European Languages
   { code: 'nl', name: 'Dutch', native: 'Nederlands', flag: '🇳🇱', ttsLang: 'nl' },
   { code: 'tr', name: 'Turkish', native: 'Türkçe', flag: '🇹🇷', ttsLang: 'tr' },
-  { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', flag: '🇻🇳', ttsLang: 'vi' },
-  { code: 'th', name: 'Thai', native: 'ไทย', flag: '🇹🇭', ttsLang: 'th' },
-  { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', flag: '🇮🇩', ttsLang: 'id' },
   { code: 'pl', name: 'Polish', native: 'Polski', flag: '🇵🇱', ttsLang: 'pl' },
   { code: 'uk', name: 'Ukrainian', native: 'Українська', flag: '🇺🇦', ttsLang: 'uk' },
   { code: 'el', name: 'Greek', native: 'Ελληνικά', flag: '🇬🇷', ttsLang: 'el' },
@@ -70,10 +85,32 @@ const SUPPORTED_LANGUAGES = [
   { code: 'ro', name: 'Romanian', native: 'Română', flag: '🇷🇴', ttsLang: 'ro' },
   { code: 'hu', name: 'Hungarian', native: 'Magyar', flag: '🇭🇺', ttsLang: 'hu' },
   { code: 'sk', name: 'Slovak', native: 'Slovenčina', flag: '🇸🇰', ttsLang: 'sk' },
-  { code: 'ms', name: 'Malay', native: 'Bahasa Melayu', flag: '🇲🇾', ttsLang: 'ms' },
-  { code: 'fa', name: 'Persian', native: 'فارسی', flag: '🇮🇷', ttsLang: 'fa' },
-  { code: 'sw', name: 'Swahili', native: 'Kiswahili', flag: '🇰🇪', ttsLang: 'sw' },
+  { code: 'bg', name: 'Bulgarian', native: 'Български', flag: '🇧🇬', ttsLang: 'bg' },
+  { code: 'hr', name: 'Croatian', native: 'Hrvatski', flag: '🇭🇷', ttsLang: 'hr' },
+  { code: 'sr', name: 'Serbian', native: 'Српски', flag: '🇷🇸', ttsLang: 'sr' },
+  { code: 'sl', name: 'Slovenian', native: 'Slovenščina', flag: '🇸🇮', ttsLang: 'sl' },
+  { code: 'lt', name: 'Lithuanian', native: 'Lietuvių', flag: '🇱🇹', ttsLang: 'lt' },
+  { code: 'lv', name: 'Latvian', native: 'Latviešu', flag: '🇱🇻', ttsLang: 'lv' },
+  { code: 'et', name: 'Estonian', native: 'Eesti', flag: '🇪🇪', ttsLang: 'et' },
+  { code: 'is', name: 'Icelandic', native: 'Íslenska', flag: '🇮🇸', ttsLang: 'is' },
+  { code: 'ga', name: 'Irish', native: 'Gaeilge', flag: '🇮🇪', ttsLang: 'ga' },
+  { code: 'cy', name: 'Welsh', native: 'Cymraeg', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', ttsLang: 'cy' },
+  { code: 'sq', name: 'Albanian', native: 'Shqip', flag: '🇦🇱', ttsLang: 'sq' },
+  { code: 'mk', name: 'Macedonian', native: 'Македонски', flag: '🇲🇰', ttsLang: 'mk' },
+  { code: 'bs', name: 'Bosnian', native: 'Bosanski', flag: '🇧🇦', ttsLang: 'bs' },
+  { code: 'ca', name: 'Catalan', native: 'Català', flag: '🇪🇸', ttsLang: 'ca' },
+  { code: 'eu', name: 'Basque', native: 'Euskara', flag: '🇪🇸', ttsLang: 'eu' },
+  { code: 'gl', name: 'Galician', native: 'Galego', flag: '🇪🇸', ttsLang: 'gl' },
   { code: 'la', name: 'Latin', native: 'Latina', flag: '🏛️', ttsLang: 'la' },
+  { code: 'eo', name: 'Esperanto', native: 'Esperanto', flag: '🌐', ttsLang: 'eo' },
+
+  // Middle Eastern, Caucasian & African Languages
+  { code: 'fa', name: 'Persian', native: 'فارسی', flag: '🇮🇷', ttsLang: 'fa' },
+  { code: 'ka', name: 'Georgian', native: 'ქართული', flag: '🇬🇪', ttsLang: 'ka' },
+  { code: 'hy', name: 'Armenian', native: 'Հայերեն', flag: '🇦🇲', ttsLang: 'hy' },
+  { code: 'sw', name: 'Swahili', native: 'Kiswahili', flag: '🇰🇪', ttsLang: 'sw' },
+  { code: 'af', name: 'Afrikaans', native: 'Afrikaans', flag: '🇿🇦', ttsLang: 'af' },
+  { code: 'zu', name: 'Zulu', native: 'isiZulu', flag: '🇿🇦', ttsLang: 'zu' },
 ];
 
 /**
@@ -692,10 +729,14 @@ app.get('/api/health', (req, res) => {
 });
 
 // Start Express Server
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🚀 PDF to Audio & Language Translator Server running`);
-  console.log(`📡 URL: http://localhost:${PORT}`);
-  console.log(`📂 Static Assets: ${path.join(__dirname, 'public')}`);
-  console.log(`====================================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🚀 PDF to Audio & Language Translator Server running`);
+    console.log(`📡 URL: http://localhost:${PORT}`);
+    console.log(`📂 Static Assets: ${path.join(__dirname, 'public')}`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = app;
