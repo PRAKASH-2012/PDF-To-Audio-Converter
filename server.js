@@ -714,7 +714,7 @@ app.get('/api/sample-pdf', (req, res) => {
   if (fs.existsSync(samplePath)) {
     res.sendFile(samplePath);
   } else {
-    res.status(404).json({ success: false, error: 'Sample PDF not found.' });
+    res.redirect('/sample.pdf');
   }
 });
 

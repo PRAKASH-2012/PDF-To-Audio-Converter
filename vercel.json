@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": {
+        "type": "service",
+        "service": "voxlingo-pdf-audio"
+      }
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
+  "services": {
+    "voxlingo-pdf-audio": {
+      "root": ".",
+      "entrypoint": "server.js",
+      "buildCommand": "npm install"
     }
-  ]
+  }
 }
